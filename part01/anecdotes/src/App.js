@@ -25,18 +25,29 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(quoteCount).fill(0))
 
+  // Voting function
   const Vote = () => {
     const copyVotes = [ ...votes ]
     copyVotes[selected] += 1
     setVotes(copyVotes)
   }
 
+  // Finding max number of votes and position thereof
+  const MaxVotes = () => (
+    votes.indexOf( Math.max(...votes) )
+  )
+  
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]} <br />
       has {votes[selected]} votes <br />
       <Button handleClick={() => Vote()} text="vote" />
       <Button handleClick={() => setSelected(Math.floor(Math.random() * quoteCount)) } text="next anecdote" />
+
+      <h1>Anecdote with most votes</h1>
+      {anecdotes[MaxVotes()]} <br />
+      has {votes[MaxVotes()]} votes <br />
     </div>
   )
 }
