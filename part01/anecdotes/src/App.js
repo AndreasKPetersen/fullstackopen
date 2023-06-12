@@ -18,14 +18,25 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
   
+  // Number of quotes/anecdotes
   const quoteCount = anecdotes.length
 
+  // Hooks
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(quoteCount).fill(0))
+
+  const Vote = () => {
+    const copyVotes = [ ...votes ]
+    copyVotes[selected] += 1
+    setVotes(copyVotes)
+  }
 
   return (
     <div>
       {anecdotes[selected]} <br />
-      <Button handleClick={() => setSelected(Math.floor(Math.random() * (quoteCount + 1)))} text="next anecdote" />
+      has {votes[selected]} votes <br />
+      <Button handleClick={() => Vote()} text="vote" />
+      <Button handleClick={() => setSelected(Math.floor(Math.random() * quoteCount)) } text="next anecdote" />
     </div>
   )
 }
