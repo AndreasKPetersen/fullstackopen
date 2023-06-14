@@ -1,3 +1,5 @@
+import axios from "axios"
+
 const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNewNumber} ) => {
         
     const handleNameChange = (event) => {
@@ -17,13 +19,19 @@ const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNe
         else {
           const personObject = {
             name: newName,
-            number: newNumber,
-            id: persons.length+1
+            number: newNumber
           }
+
+          axios
+            .post('http://localhost:3001/persons', personObject)
+            .then(response => {
+                setPersons(persons.concat(personObject))
+                setNewName('')
+                setNewNumber('')
+            })
     
-          setPersons(persons.concat(personObject))
-          setNewName('')
-          setNewNumber('')
+          
+          
         }
     }
 
