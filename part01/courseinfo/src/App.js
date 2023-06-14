@@ -13,7 +13,6 @@ const Part = (props) => {
 }
 
 const Content = (props) => {
-  console.log(props)
 
   return(
     <>
