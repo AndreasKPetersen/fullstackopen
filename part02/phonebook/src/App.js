@@ -14,6 +14,9 @@ const App = () => {
     personService
       .getAll()
       .then(response => setPersons(response.data))
+      .catch(error => {
+        console.log('failed during getAll')
+      })
   }, [])
 
   const [newFilter, setNewFilter] = useState('')

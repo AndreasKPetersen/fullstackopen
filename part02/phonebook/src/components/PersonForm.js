@@ -28,6 +28,9 @@ const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNe
                 setNewName('')
                 setNewNumber('')
             })
+            .catch(error => {
+              console.log('failed during create')
+            })
         }
         else {
           window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
@@ -36,6 +39,9 @@ const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNe
             .then(response => {
               setPersons(persons.map(person =>
                 person.id !== response.data.id ? person : response.data))
+            })
+            .catch(error => {
+              console.log('failed during update')
             })
         }
     }

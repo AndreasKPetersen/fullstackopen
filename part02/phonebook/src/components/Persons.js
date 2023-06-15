@@ -13,6 +13,9 @@ const Persons = ( {persons, setPersons, newFilter} ) => {
             .then(response => {
                 setPersons(persons.filter(person => person.id !== id))
             })
+            .catch(error => {
+                console.log('failed during remove')
+              })
         }
     }
 
