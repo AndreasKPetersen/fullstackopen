@@ -1,6 +1,6 @@
 import personService from './../services/persons'
 
-const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNewNumber} ) => {
+const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNewNumber, setMessage} ) => {
         
     const handleNameChange = (event) => {
         setNewName(event.target.value)
@@ -24,12 +24,25 @@ const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNe
           personService
             .create(personObject)
             .then(response => {
-                setPersons(persons.concat(personObject))
-                setNewName('')
-                setNewNumber('')
+              setPersons(persons.concat(personObject))
+              setNewName('')
+              setNewNumber('')
+              setMessage( {
+                message: `${newName} was succesfully updated in the phonebook`,
+                type: "success"
+              } )
+              setTimeout(() => {
+                  setMessage(null)
+              }, 5000)
             })
             .catch(error => {
-              console.log('failed during create')
+              setMessage( {
+                message: `${newName} was not succesfully created in the phonebook`,
+                type: "error"
+              } )
+              setTimeout(() => {
+                  setMessage(null)
+              }, 5000)
             })
         }
         else {
@@ -39,9 +52,22 @@ const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNe
             .then(response => {
               setPersons(persons.map(person =>
                 person.id !== response.data.id ? person : response.data))
+              setMessage( {
+                message: `${newName} was succesfully updated in the phonebook`,
+                type: "success"
+              } )
+              setTimeout(() => {
+                  setMessage(null)
+              }, 5000)
             })
             .catch(error => {
-              console.log('failed during update')
+              setMessage( {
+                message: `${newName} was not succesfully updated in the phonebook`,
+                type: "error"
+              } )
+              setTimeout(() => {
+                  setMessage(null)
+              }, 5000)
             })
         }
     }

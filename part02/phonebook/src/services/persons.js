@@ -24,4 +24,4 @@ const personService = {
     update,
     remove 
 }
-export default personService
+export default personService 

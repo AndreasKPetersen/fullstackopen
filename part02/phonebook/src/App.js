@@ -32,7 +32,7 @@ const App = () => {
       <Filter newFilter={newFilter} setNewFilter={setNewFilter}/>
 
       <h3>Add a new</h3>
-      <PersonForm persons={persons} setPersons={setPersons} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
+      <PersonForm persons={persons} setPersons={setPersons} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} setMessage={setMessage} />
 
       <h3>Numbers</h3>
       <Persons persons={persons} setPersons={setPersons} newFilter={newFilter} setMessage={setMessage}/>

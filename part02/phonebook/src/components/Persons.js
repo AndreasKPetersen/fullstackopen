@@ -12,15 +12,23 @@ const Persons = ( {persons, setPersons, newFilter, setMessage} ) => {
             .remove(id)
             .then(response => {
                 setPersons(persons.filter(person => person.id !== id))
-                setMessage(
-                    `${name} was deleted from the phonebook`
-                )
+                setMessage( {
+                    message: `${name} was succesfully deleted from the phonebook`,
+                    type: "success"
+                } )
                 setTimeout(() => {
                     setMessage(null)
                 }, 5000)
             })
             .catch(error => {
-                console.log(error)
+                setPersons(persons.filter(person => person.id !== id))
+                setMessage( {
+                    message: `${name} was already deleted from the phonebook`,
+                    type: "error"
+                } )
+                setTimeout(() => {
+                    setMessage(null)
+                }, 5000)
               })
         }
     }
