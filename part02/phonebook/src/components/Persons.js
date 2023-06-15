@@ -1,6 +1,6 @@
 import personService from './../services/persons'
 
-const Persons = ( {persons, setPersons, newFilter} ) => {
+const Persons = ( {persons, setPersons, newFilter, setMessage} ) => {
 
     const personsToShow = (!newFilter.length)
     ? persons
@@ -12,9 +12,15 @@ const Persons = ( {persons, setPersons, newFilter} ) => {
             .remove(id)
             .then(response => {
                 setPersons(persons.filter(person => person.id !== id))
+                setMessage(
+                    `${name} was deleted from the phonebook`
+                )
+                setTimeout(() => {
+                    setMessage(null)
+                }, 5000)
             })
             .catch(error => {
-                console.log('failed during remove')
+                console.log(error)
               })
         }
     }
