@@ -12,16 +12,15 @@ const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNe
 
     const addPerson = (event) => {
         event.preventDefault()
-        
-        if (persons.filter(person => person.name === newName).length) {
-          alert(`${newName} is already added to phonebook`)
-        }
-        else {
-          const personObject = {
-            name: newName,
-            number: newNumber
-          }
 
+        const newPerson = persons.find(person => person.name === newName)
+        
+        const personObject = {
+          name: newName,
+          number: newNumber
+        }
+
+        if (newPerson === undefined) {
           personService
             .create(personObject)
             .then(response => {
@@ -29,9 +28,15 @@ const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNe
                 setNewName('')
                 setNewNumber('')
             })
-    
-          
-          
+        }
+        else {
+          window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+          personService
+            .update(newPerson.id, personObject)
+            .then(response => {
+              setPersons(persons.map(person =>
+                person.id !== response.data.id ? person : response.data))
+            })
         }
     }
 
