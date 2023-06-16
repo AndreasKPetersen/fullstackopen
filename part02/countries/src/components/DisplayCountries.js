@@ -1,4 +1,4 @@
-const DisplayCountries = ( {filter, countriesToDisplay} ) => {
+const DisplayCountries = ( {filter, countriesToDisplay, setCountriesToDisplay} ) => {
 
     const countriesDisplayCount = countriesToDisplay.length
 
@@ -46,11 +46,12 @@ const DisplayCountries = ( {filter, countriesToDisplay} ) => {
     else {
         return (
             <div>
-                <ul>
-                    {countriesToDisplay.map(countryToDisplay => 
-                        <li key={countryToDisplay.name.common}>{countryToDisplay.name.common}</li>
-                    )}
-                </ul>
+                {countriesToDisplay.map(countryToDisplay => 
+                    <div key={countryToDisplay.name.common}>
+                        {countryToDisplay.name.common} &nbsp;
+                        <button onClick={ () => setCountriesToDisplay([countryToDisplay]) }>show</button>
+                    </div>
+                )}
             </div>
         )
     }

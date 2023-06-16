@@ -22,7 +22,7 @@ const App = () => {
     setCountriesToDisplay(countries.filter(country =>
       country.name.common.includes(filterValue)
     ))
-    console.log(filterValue.length)
+    console.log(filterValue)
   }
 
   return (
@@ -30,7 +30,7 @@ const App = () => {
       <div>
         find countries <input value={filter} onChange={handleFilterChange} />
       </div>
-      <DisplayCountries filter={filter} countriesToDisplay={countriesToDisplay}/>
+      <DisplayCountries filter={filter} countriesToDisplay={countriesToDisplay} setCountriesToDisplay={setCountriesToDisplay} />
     </div>
     
   )
