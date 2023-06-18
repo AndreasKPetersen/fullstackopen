@@ -1,3 +1,5 @@
+import Weather from './Weather';
+
 const DisplayCountries = ( {filter, countriesToDisplay, setCountriesToDisplay} ) => {
 
     const countriesDisplayCount = countriesToDisplay.length
@@ -31,6 +33,9 @@ const DisplayCountries = ( {filter, countriesToDisplay, setCountriesToDisplay} )
                 </ul>
 
                 <img src={countryData.flags.png} alt={countryData.flags.alt}></img>
+
+                <Weather capital={countryData.capital} />
+                
             </div>
         )
     }

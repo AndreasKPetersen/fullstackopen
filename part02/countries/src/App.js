@@ -8,6 +8,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [countriesToDisplay, setCountriesToDisplay] = useState([])
 
+
   useEffect(() => {
     axios
       .get("https://studies.cs.helsinki.fi/restcountries/api/all")
@@ -22,7 +23,6 @@ const App = () => {
     setCountriesToDisplay(countries.filter(country =>
       country.name.common.includes(filterValue)
     ))
-    console.log(filterValue)
   }
 
   return (
