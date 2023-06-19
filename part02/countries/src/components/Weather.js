@@ -10,7 +10,6 @@ const Weather = ( {capital} ) => {
         axios
             .get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&units=metric&appid=${OPENWEATHER_API_KEY}`)
             .then(response => {
-                console.log(response.data)
                 setWeather(response.data)
             })
     }, [])
