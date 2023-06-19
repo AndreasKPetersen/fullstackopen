@@ -27,9 +27,34 @@ let persons = [
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
   })
-  
+
+app.get('/info', (request, response) => {
+  const personCount = persons.length
+  response.send(`
+    <p>
+      Phonebook has info for ${personCount} people
+    </p>
+
+    <p>
+      ${Date()}
+    </p>
+  `)
+})
+
 app.get('/api/persons', (request, response) => {
-response.json(persons)
+  response.json(persons)
+})
+
+app.get('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const person = persons.find(person => person.id === id)
+  if (person) {
+    response.json(person)
+  }
+  else {
+    response.statusMessage = `Not found: A person with id ${id} does not exist in the phonebook`
+    response.status(404).end()
+  }
 })
 
 const PORT = 3001
