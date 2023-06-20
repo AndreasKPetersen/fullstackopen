@@ -1,7 +1,7 @@
-POST http://localhost:3001/api/persons
+POST https://phonebookakp.fly.dev/api/persons
 Content-Type: application/json
 
 {
-
+    "name": "Andreas Petersen", 
     "number": "12-43-233673"
 }
