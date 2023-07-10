@@ -1,4 +1,4 @@
-POST https://phonebookakp.fly.dev/api/persons
+POST https://test-phonebook.fly.dev/api/persons
 Content-Type: application/json
 
 {
