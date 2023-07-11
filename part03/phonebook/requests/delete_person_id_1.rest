@@ -1,1 +1,1 @@
-DELETE https://test-phonebook.fly.dev/api/persons/1
+DELETE http://localhost:8080/api/persons/64acd9c244f5f0a33f062271
