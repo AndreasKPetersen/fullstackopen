@@ -1,0 +1,7 @@
+PUT http://localhost:8080/api/persons/64acdb0644f5f0a33f062286
+Content-Type: application/json
+
+{
+    "name": "Andreas Petersen", 
+    "number": "12-43-233673"
+}

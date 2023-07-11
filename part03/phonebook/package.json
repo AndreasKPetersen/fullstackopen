@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.2.15",
+    "eslint": "^8.44.0",
     "nodemon": "^2.0.22"
   },
   "proxy": "http://localhost:8080"
