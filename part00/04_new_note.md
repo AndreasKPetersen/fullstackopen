@@ -27,7 +27,7 @@ sequenceDiagram
     deactivate server
 
     Note between browser and server
-    The browser starts executing the JavaScript code that fetches the JSON from the server
+    The browser starts executing JavaScript code that fetches the JSON from the server
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
@@ -41,3 +41,4 @@ sequenceDiagram
     activate server
     server-->browser: 200 OK - HTML
     deactivate server
+ 
