@@ -29,12 +29,23 @@ test('all blogs are returned', async () => {
 test('unique identifier property of blog posts is id', async () => {
   const response = await api.get('/api/blogs')
 
-  const ids = response.body.map( blog => blog.id )
-
   for (let id of (response.body.map(blog => blog.id))) {
     expect(id).toBeDefined()
   }
 })
+
+test('a blog can be added', async () => {
+  await api
+    .post('/api/blogs')
+    .send(helper.singleBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+})
+
+
 
 afterAll(async () => {
   await mongoose.connection.close()
