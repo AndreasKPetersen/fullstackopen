@@ -45,7 +45,25 @@ test('a blog can be added', async () => {
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 })
 
+test('handling missing likes', async () => {
+  const newBlog = [
+    {
+      title: 'React patterns',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/'
+    }
+  ]
+  
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
 
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+  expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
+})
 
 afterAll(async () => {
   await mongoose.connection.close()
