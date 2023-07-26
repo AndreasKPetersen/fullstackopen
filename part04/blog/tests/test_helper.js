@@ -1,13 +1,12 @@
 const Blog = require('../models/blog')
 
-const singleBlog = [
+const singleBlog =
   {
     title: 'React patterns',
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7
   }
-]
 
 const initialBlogs = [
   {

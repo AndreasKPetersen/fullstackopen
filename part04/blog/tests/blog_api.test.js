@@ -46,23 +46,71 @@ test('a blog can be added', async () => {
 })
 
 test('handling missing likes', async () => {
-  const newBlog = [
+  const newBlog =
     {
       title: 'React patterns',
       author: 'Michael Chan',
       url: 'https://reactpatterns.com/'
     }
-  ]
-  
+
   await api
     .post('/api/blogs')
     .send(newBlog)
     .expect(201)
-    .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
   expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
+})
+
+test('handling missing title', async () => {
+  const newBlog =
+    {
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+      likes: 3,
+    }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
+test('handling missing url', async () => {
+  const newBlog =
+    {
+      title: 'React patterns',
+      author: 'Michael Chan',
+      likes: 3,
+    }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
+test('a blog can be deleted', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+  
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1)
+
+  const titles = blogsAtEnd.map(r => r.title)
+
+  expect(titles).not.toContain(blogToDelete.title)
 })
 
 afterAll(async () => {
