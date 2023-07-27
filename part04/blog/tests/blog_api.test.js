@@ -131,6 +131,23 @@ test('a blog can be updated', async () => {
   expect(blogsAtEnd[0].likes).toBe(20)
 })
 
+test('invalid add user operation', async () => {
+  const usersAtStart = await helper.usersInDb()
+  
+  const newUser = {
+    username: 'AndreasFP',
+    name: 'Andreas'
+  }
+
+  await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
+
+  const usersAtEnd = await helper.usersInDb()
+  expect(usersAtEnd).toHaveLength(usersAtStart.length)
+}) 
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
