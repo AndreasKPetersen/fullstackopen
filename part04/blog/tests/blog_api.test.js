@@ -133,7 +133,7 @@ test('a blog can be updated', async () => {
 
 test('invalid add user operation', async () => {
   const usersAtStart = await helper.usersInDb()
-  
+
   const newUser = {
     username: 'AndreasFP',
     name: 'Andreas'
@@ -146,7 +146,7 @@ test('invalid add user operation', async () => {
 
   const usersAtEnd = await helper.usersInDb()
   expect(usersAtEnd).toHaveLength(usersAtStart.length)
-}) 
+})
 
 afterAll(async () => {
   await mongoose.connection.close()
