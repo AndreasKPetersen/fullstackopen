@@ -1,12 +1,32 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
+const singleUser =
+  {
+    username: 'adepe',
+    name: 'Andreas',
+    password: 'password'
+  }
+
+const initialUsers = [
+  {
+    username: 'root',
+    name: 'root',
+    password: 'password'
+  },
+  {
+    username: 'admin',
+    name: 'admin',
+    password: 'password'
+  }
+]
+
 const singleBlog =
   {
-    title: 'React patterns',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 7
+    title: 'React pattern',
+    author: 'Michael Chans',
+    url: 'https://reactpattern.com/',
+    likes: 15
   }
 
 const initialBlogs = [
@@ -43,6 +63,8 @@ const usersInDb = async () => {
 }
 
 module.exports = {
+  singleUser,
+  initialUsers,
   singleBlog,
   initialBlogs,
   nonExistingId,
