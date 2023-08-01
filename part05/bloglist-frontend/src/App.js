@@ -17,9 +17,11 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs( blogs.sort(function(a, b) { 
+        return - ( a.likes - b.likes ) || a.title.localeCompare(b.title);
+      }) )
     )  
-  }, [])
+  }, [blogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -105,8 +107,6 @@ const App = () => {
   const updateLikes = async (id, blogObject) => {
     try {
       await blogService.update(id, blogObject)
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
     } catch (exception) {
       setMessage( {
         message: 'Likes field was not updated',
