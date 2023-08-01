@@ -37,7 +37,7 @@ const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNe
             })
             .catch(error => {
               setMessage( {
-                message: `${newName} was not succesfully created in the phonebook`,
+                message: error.response.data.error,
                 type: "error"
               } )
               setTimeout(() => {
@@ -62,7 +62,7 @@ const PersonForm = ( {persons, setPersons, newName, setNewName, newNumber, setNe
             })
             .catch(error => {
               setMessage( {
-                message: `${newName} was not succesfully updated in the phonebook`,
+                message: error.response.data.error,
                 type: "error"
               } )
               setTimeout(() => {

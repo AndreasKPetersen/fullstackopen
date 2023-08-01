@@ -29,13 +29,13 @@ blogsRouter.post('/', async (request, response) => {
   }
   const user = await User.findById(decodedToken.id)
 
-  const blog = new Blog({
+  const blog = await new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes,
     user: user._id
-  })
+  }).populate('user', { username: 1, name: 1 })
 
   const savedBlog = await blog.save()
   user.blogs = user.blogs.concat(savedBlog._id)

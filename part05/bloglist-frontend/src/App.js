@@ -8,7 +8,6 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
-  const [loginVisible, setLoginVisible] = useState(false)
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState(null)
 
@@ -27,6 +26,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -128,8 +128,6 @@ const App = () => {
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm 
             createBlog={addBlog}
-            handleLogout={handleLogout}
-            user={user}
           />
         </Togglable>
       </div>
