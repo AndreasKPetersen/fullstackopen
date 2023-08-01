@@ -1,23 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
   const [loginVisible, setLoginVisible] = useState(false)
-  const [createVisible, setCreateVisible] = useState(false)
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState('')
   const [message, setMessage] = useState(null)
+
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -32,6 +29,8 @@ const App = () => {
       setUser(user)
     }
   }, [])
+
+  const blogFormRef = useRef()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -66,39 +65,6 @@ const App = () => {
     }
   }
 
-  const addBlog = (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url
-    }
-
-    blogService
-      .create(blogObject)
-        .then(returnedBlog => {
-          setBlogs(blogs.concat(returnedBlog))
-          setNewBlog('')
-          setMessage( {
-            message: `a new blog ${blogObject.title} by ${blogObject.author} added`,
-            type: "success"
-          } )
-          setTimeout(() => {
-              setMessage(null)
-          }, 5000)
-        })
-        .catch(error => {
-          setNewBlog('')
-          setMessage( {
-            message: `a new blog was not added`,
-            type: "error"
-          } )
-          setTimeout(() => {
-              setMessage(null)
-          }, 5000)
-        })
-  }
-
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
@@ -111,6 +77,32 @@ const App = () => {
     }, 5000)
   }
 
+  const addBlog = (blogObject) => {
+    blogService
+      .create(blogObject)
+        .then(returnedBlog => {
+          setBlogs(blogs.concat(returnedBlog))
+          blogFormRef.current.toggleVisibility()
+          setMessage( {
+            message: `a new blog ${blogObject.title} by ${blogObject.author} added`,
+            type: "success"
+          } )
+          setTimeout(() => {
+              setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setMessage( {
+            message: `a new blog was not added`,
+            type: "error"
+          } )
+          setTimeout(() => {
+              setMessage(null)
+          }, 5000)
+        })
+
+  }
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -118,35 +110,35 @@ const App = () => {
       <Notification message={message} />
       
       {!user && 
+      <Togglable buttonLabel="log in">
         <LoginForm 
           handleLogin={handleLogin}
           username={username}
           setUsername={setUsername}
           password={password}
           setPassword={setPassword}
-          loginVisible={loginVisible}
-          setLoginVisible={setLoginVisible}
         />
+      </Togglable>
       }
 
-      {user && <BlogForm 
-        addBlog={addBlog}
-        handleLogout={handleLogout}
-        user={user}
-        title={title}
-        setTitle={setTitle}
-        author={author}
-        setAuthor={setAuthor}
-        url={url}
-        setUrl={setUrl}
-        createVisible={createVisible}
-        setCreateVisible={setCreateVisible}
-      />}
+      {user && 
+      <div>
+        <p>{user.username} logged in <button onClick={handleLogout}>logout</button></p>
+
+        <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+          <BlogForm 
+            createBlog={addBlog}
+            handleLogout={handleLogout}
+            user={user}
+          />
+        </Togglable>
+      </div>
+      }
 
       <div>
-      {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-      )}
+        {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+        )}
       </div>
     </div>
   )

@@ -3,20 +3,10 @@ const LoginForm = ({
     username,
     setUsername,
     password,
-    setPassword,
-    loginVisible,
-    setLoginVisible
-}) => {
-
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
-
+    setPassword
+    }) => {
     return (
       <div>        
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
         <form onSubmit={handleLogin}>
         <div>
           username
@@ -38,8 +28,6 @@ const LoginForm = ({
         </div>
         <button type="submit">login</button>
         </form>
-        <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
       </div>
     )
 }

@@ -1,32 +1,26 @@
-const BlogForm = ({
-    addBlog,
-    handleLogout,
-    user,
-    title,
-    setTitle,
-    author,
-    setAuthor,
-    url,
-    setUrl,
-    createVisible,
-    setCreateVisible
-}) => {
+import { useState } from "react"
 
-    const hideWhenVisible = { display: createVisible ? 'none' : '' }
-    const showWhenVisible = { display: createVisible ? '' : 'none' }
+const BlogForm = ({ createBlog }) => {
+    const [title, setTitle] = useState('')
+    const [author, setAuthor] = useState('')
+    const [url, setUrl] = useState('')
+
+    const addBlog = (event) => {
+        event.preventDefault()
+        createBlog({
+            title: title,
+            author: author,
+            url: url
+        })
+
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+    }
 
     return (
-        <div>
-            <div>
-            {user.username} logged in <button onClick={handleLogout}>logout</button>
-            </div>
-            <br/>
-            
+        <div>            
             <h2>create new</h2>
-            <div style={hideWhenVisible}>
-                <button onClick={() => setCreateVisible(true)}>add blog</button>
-            </div>
-            <div style={showWhenVisible}>
             <form onSubmit={addBlog}>
             <div>
                 title
@@ -54,9 +48,7 @@ const BlogForm = ({
             </div>
             <button type="submit">create</button>
             </form>
-            <button onClick={() => setCreateVisible(false)}>cancel</button>
-            </div>
-      </div>
+        </div>
     )
 }
 
