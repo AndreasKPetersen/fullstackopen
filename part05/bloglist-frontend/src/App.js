@@ -11,16 +11,16 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [message, setMessage] = useState(null)
 
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs.sort(function(a, b) { 
-        return - ( a.likes - b.likes ) || a.title.localeCompare(b.title);
+      setBlogs( blogs.sort(function(a, b) {
+        return - ( a.likes - b.likes ) || a.title.localeCompare(b.title)
       }) )
-    )  
+    )
   }, [setBlogs])
 
   useEffect(() => {
@@ -36,12 +36,12 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password,
       })
-      
+
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
@@ -51,7 +51,7 @@ const App = () => {
       setPassword('')
       setMessage( {
         message: `${user.username} logged in successfully`,
-        type: "success"
+        type: 'success'
       } )
       setTimeout(() => {
         setMessage(null)
@@ -59,7 +59,7 @@ const App = () => {
     } catch (exception) {
       setMessage( {
         message: 'Wrong credentials',
-        type: "error"
+        type: 'error'
       } )
       setTimeout(() => {
         setMessage(null)
@@ -71,43 +71,41 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
     setMessage( {
-      message: `logout successful`,
-      type: "success"
+      message: 'logout successful',
+      type: 'success'
     } )
     setTimeout(() => {
-        setMessage(null)
+      setMessage(null)
     }, 5000)
   }
 
-  const createBlog = (blogObject) => {
-    blogService
-      .create(blogObject)
-        .then(returnedBlog => {
-          setBlogs(blogs.concat(returnedBlog))
-          blogFormRef.current.toggleVisibility()
-          setMessage( {
-            message: `a new blog ${blogObject.title} by ${blogObject.author} added`,
-            type: "success"
-          } )
-          setTimeout(() => {
-              setMessage(null)
-          }, 5000)
-        })
-        .catch(error => {
-          setMessage( {
-            message: `a new blog was not added`,
-            type: "error"
-          } )
-          setTimeout(() => {
-              setMessage(null)
-          }, 5000)
-        })
+  const createBlog = async (blogObject) => {
+    try {
+      const createdBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(createdBlog))
+      blogFormRef.current.toggleVisibility()
+      setMessage( {
+        message: `a new blog ${blogObject.title} by ${blogObject.author} added`,
+        type: 'success'
+      } )
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    } catch (exception) {
+      setMessage( {
+        message: 'a new blog was not added',
+        type: 'error'
+      } )
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
   }
 
   const updateLikes = async (id, blogObject) => {
     try {
       await blogService.update(id, blogObject)
-      
+
       const updatedBlogs = await blogService.getAll()
 
       setBlogs(updatedBlogs)
@@ -115,7 +113,7 @@ const App = () => {
     } catch (exception) {
       setMessage( {
         message: 'Likes field was not updated',
-        type: "error"
+        type: 'error'
       } )
       setTimeout(() => {
         setMessage(null)
@@ -135,7 +133,7 @@ const App = () => {
       } catch (exception) {
         setMessage( {
           message: 'Blog was not deleted',
-          type: "error"
+          type: 'error'
         } )
         setTimeout(() => {
           setMessage(null)
@@ -143,16 +141,16 @@ const App = () => {
       }
     }
   }
-  
+
   return (
     <div>
       <h2>Blogs</h2>
-      
+
       <Notification message={message} />
-      
-      {!user && 
+
+      {!user &&
       <Togglable buttonLabel="log in">
-        <LoginForm 
+        <LoginForm
           handleLogin={handleLogin}
           username={username}
           setUsername={setUsername}
@@ -162,29 +160,29 @@ const App = () => {
       </Togglable>
       }
 
-      {user && 
+      {user &&
       <div>
         <p>{user.username} logged in <button onClick={handleLogout}>logout</button></p>
 
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-          <BlogForm 
+          <BlogForm
             createBlog={createBlog}
           />
         </Togglable>
 
         <div>
-        {blogs.sort(function(a, b) { 
-          return - ( a.likes - b.likes ) || a.title.localeCompare(b.title);
-        }).map(blog =>
+          {blogs.sort(function(a, b) {
+            return - ( a.likes - b.likes ) || a.title.localeCompare(b.title)
+          }).map(blog =>
             <Blog
-            key={blog.id}
-            blog={blog}
-            updateLikes={updateLikes}
-            user={user}
-            deleteBlog={deleteBlog}
+              key={blog.id}
+              blog={blog}
+              updateLikes={updateLikes}
+              user={user}
+              deleteBlog={deleteBlog}
             />
-        )}
-      </div>
+          )}
+        </div>
       </div>
       }
     </div>

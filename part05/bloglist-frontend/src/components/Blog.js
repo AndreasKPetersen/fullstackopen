@@ -37,18 +37,18 @@ const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
   }
 
   return (
-  <div style={blogStyle}>
-    <div>
-      {blog.title} {blog.author} <button onClick={toggleVisibility}>{buttonText}</button>
-      <div style={showWhenVisible}>
-        <p>{blog.url}</p>
-        <p>{blog.likes} <button onClick={handleLike}>like</button></p>
-        <p>{blog.user.username}</p>
-        {(user.username === blog.user.username) &&
+    <div style={blogStyle}>
+      <div>
+        {blog.title} {blog.author} <button onClick={toggleVisibility}>{buttonText}</button>
+        <div style={showWhenVisible}>
+          <p>{blog.url}</p>
+          <p>{blog.likes} <button onClick={handleLike}>like</button></p>
+          <p>{blog.user.username}</p>
+          {(user.username === blog.user.username) &&
         <p><button onClick={handleDelete}>delete</button></p>}
+        </div>
       </div>
     </div>
-  </div>  
-)}
+  )}
 
 export default Blog
