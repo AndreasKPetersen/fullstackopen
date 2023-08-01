@@ -77,7 +77,7 @@ const App = () => {
     }, 5000)
   }
 
-  const addBlog = (blogObject) => {
+  const createBlog = (blogObject) => {
     blogService
       .create(blogObject)
         .then(returnedBlog => {
@@ -100,7 +100,22 @@ const App = () => {
               setMessage(null)
           }, 5000)
         })
+  }
 
+  const updateLikes = async (id, blogObject) => {
+    try {
+      await blogService.update(id, blogObject)
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)
+    } catch (exception) {
+      setMessage( {
+        message: 'Likes field was not updated',
+        type: "error"
+      } )
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
   }
 
   return (
@@ -127,7 +142,7 @@ const App = () => {
 
         <Togglable buttonLabel="create new blog" ref={blogFormRef}>
           <BlogForm 
-            createBlog={addBlog}
+            createBlog={createBlog}
           />
         </Togglable>
       </div>
@@ -135,7 +150,7 @@ const App = () => {
 
       <div>
         {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} updateLikes={updateLikes}/>
         )}
       </div>
     </div>
