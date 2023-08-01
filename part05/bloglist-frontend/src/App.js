@@ -21,7 +21,7 @@ const App = () => {
         return - ( a.likes - b.likes ) || a.title.localeCompare(b.title);
       }) )
     )  
-  }, [blogs])
+  }, [setBlogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -107,6 +107,11 @@ const App = () => {
   const updateLikes = async (id, blogObject) => {
     try {
       await blogService.update(id, blogObject)
+      
+      const updatedBlogs = await blogService.getAll()
+
+      setBlogs(updatedBlogs)
+
     } catch (exception) {
       setMessage( {
         message: 'Likes field was not updated',
@@ -118,6 +123,27 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async (id) => {
+    if (window.confirm('Do you really want to delete the post?')) {
+      try {
+        await blogService.remove(id)
+
+        const updatedBlogs = await blogService.getAll()
+
+        setBlogs(updatedBlogs)
+
+      } catch (exception) {
+        setMessage( {
+          message: 'Blog was not deleted',
+          type: "error"
+        } )
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      }
+    }
+  }
+  
   return (
     <div>
       <h2>Blogs</h2>
@@ -145,14 +171,22 @@ const App = () => {
             createBlog={createBlog}
           />
         </Togglable>
-      </div>
-      }
 
-      <div>
-        {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} updateLikes={updateLikes}/>
+        <div>
+        {blogs.sort(function(a, b) { 
+          return - ( a.likes - b.likes ) || a.title.localeCompare(b.title);
+        }).map(blog =>
+            <Blog
+            key={blog.id}
+            blog={blog}
+            updateLikes={updateLikes}
+            user={user}
+            deleteBlog={deleteBlog}
+            />
         )}
       </div>
+      </div>
+      }
     </div>
   )
 }
