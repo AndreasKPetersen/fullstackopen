@@ -42,7 +42,7 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     let credentialsUser1, credentialsUser2
-    
+
     beforeEach(function() {
       credentialsUser1 = { username: user1.username, password: user1.password }
       credentialsUser2 = { username: user2.username, password: user2.password }

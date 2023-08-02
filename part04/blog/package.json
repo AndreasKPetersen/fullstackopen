@@ -7,7 +7,8 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start:test": "cross-env NODE_ENV=test nodemon index.js"
   },
   "author": "Andreas K. Petersen",
   "license": "MIT",
@@ -34,5 +35,5 @@
     "testEnvironment": "node",
     "globalTeardown": "./tests/teardown.js"
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:3003"
 }
