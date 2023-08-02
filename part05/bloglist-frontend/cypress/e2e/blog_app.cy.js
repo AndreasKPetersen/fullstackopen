@@ -1,14 +1,20 @@
 describe('Blog app', function() {
-  let user
+  let user1, user2
 
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    user = {
-      username: 'username',
-      name: 'name',
-      password: 'password'
+    user1 = {
+      username: 'username1',
+      name: 'name1',
+      password: 'password1'
     }
-    cy.request('POST', 'http://localhost:3003/api/users', user)
+    user2 = {
+      username: 'username2',
+      name: 'name2',
+      password: 'password2'
+    }
+    cy.request('POST', 'http://localhost:3003/api/users', user1)
+    cy.request('POST', 'http://localhost:3003/api/users', user2)
     cy.visit('http://localhost:3000')
   })
 
@@ -19,15 +25,15 @@ describe('Blog app', function() {
 
   describe('Login', function() {
     it('succeeds with correct credentials', function() {
-      cy.get('input.username').type(user.username)
-      cy.get('input.password').type(user.password)
+      cy.get('input.username').type(user1.username)
+      cy.get('input.password').type(user1.password)
       cy.get('button.loginButton').click()
 
-      cy.contains(`${user.username} logged in`)
+      cy.contains(`${user1.username} logged in`)
     })
 
     it('fails with wrong credentials', function() {
-      cy.get('input.username').type(user.username)
+      cy.get('input.username').type(user1.username)
       cy.get('button.loginButton').click()
 
       cy.get('div.errorMessage')
@@ -36,8 +42,8 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.get('input.username').type(user.username)
-      cy.get('input.password').type(user.password)
+      cy.get('input.username').type(user1.username)
+      cy.get('input.password').type(user1.password)
       cy.get('button.loginButton').click()
     })
 
@@ -48,6 +54,26 @@ describe('Blog app', function() {
       cy.get('button.createButton').click()
 
       cy.get('div.blog')
+    })
+  })
+
+  describe('When logged in and a blog is created', function() {
+    beforeEach(function() {
+      cy.get('input.username').type(user1.username)
+      cy.get('input.password').type(user1.password)
+      cy.get('button.loginButton').click()
+
+      cy.get('input.title').type('title')
+      cy.get('input.author').type('author')
+      cy.get('input.url').type('url')
+      cy.get('button.createButton').click()
+    })
+
+    it('a blog can be liked', function() {
+      cy.get('button.visibilityButton').click()
+      cy.get('.likes').should('contain', '0')
+      cy.get('button.likeButton').click()
+      cy.get('.likes').should('contain', '1')
     })
   })
 })
