@@ -100,6 +100,14 @@ describe('Blog app', function() {
         cy.contains(blog1.title).parent().find('.visibilityButton').click()
         cy.get('html').should('not.contain', '.deleteButton')
       })
+
+      it('blogs are ordered according to likes', function() {
+        cy.get('.visibilityButton').click({ multiple: true })
+        cy.contains(blog2.title).parent().parent().find('.likeButton').click()
+        cy.get('.blog').eq(0).should('contain', blog2.title)
+        cy.get('.blog').eq(1).should('contain', blog1.title)
+        cy.get('.blog').eq(2).should('contain', blog3.title)
+      })
     })
   })
 
