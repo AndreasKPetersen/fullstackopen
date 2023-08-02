@@ -67,13 +67,20 @@ describe('Blog app', function() {
       cy.get('input.author').type('author')
       cy.get('input.url').type('url')
       cy.get('button.createButton').click()
+
+      cy.get('button.visibilityButton').click()
     })
 
     it('a blog can be liked', function() {
-      cy.get('button.visibilityButton').click()
       cy.get('.likes').should('contain', '0')
       cy.get('button.likeButton').click()
       cy.get('.likes').should('contain', '1')
+    })
+
+    it('a blog can be deleted', function() {
+      cy.get('button.deleteButton').click()
+      cy.get('html')
+        .should('not.contain', 'title')
     })
   })
 })
