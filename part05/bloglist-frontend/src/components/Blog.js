@@ -9,7 +9,6 @@ const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
   }
 
   const buttonText = visible ? 'hide' : 'view'
-  const showWhenVisible = { display: visible ? '' : 'none' }
 
   const blogStyle = {
     paddingTop: 10,
@@ -37,17 +36,31 @@ const Blog = ({ blog, updateLikes, user, deleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       <div>
-        {blog.title} {blog.author} <button onClick={toggleVisibility}>{buttonText}</button>
-        <div style={showWhenVisible}>
-          <p>{blog.url}</p>
-          <p>{blog.likes} <button onClick={handleLike}>like</button></p>
-          <p>{blog.user.username}</p>
-          {(user.username === blog.user.username) &&
-        <p><button onClick={handleDelete}>delete</button></p>}
-        </div>
+        <span className='blogTitle'>{blog.title} </span>
+        <span className='blogAuthor'>{blog.author}</span>
+        <button className='visibilityButton' onClick={toggleVisibility}>
+          {buttonText}
+        </button>
       </div>
+      {visible &&
+      <div className='blogDetails'>
+        <div>{blog.url}</div>
+        <div>
+          {blog.likes}
+          <button className='likeButton' onClick={handleLike}>
+            like
+          </button>
+        </div>
+        <div>{blog.user.username}</div>
+        {(user.username === blog.user.username) &&
+        <div>
+          <button className='deleteButton' onClick={handleDelete}>
+            delete
+          </button>
+        </div>}
+      </div>}
     </div>
   )}
 
