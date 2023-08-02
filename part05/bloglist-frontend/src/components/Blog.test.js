@@ -26,8 +26,6 @@ describe('<Blog />', () => {
   const deleteBlogMockHandler = jest.fn()
 
   beforeEach(() => {
-
-
     component = render(<Blog
       blog={blog}
       updateLikes={updateLikesMockHandler}
@@ -57,6 +55,18 @@ describe('<Blog />', () => {
     expect(blogContainer).toHaveTextContent(blog.url)
     expect(blogContainer).toHaveTextContent(blog.likes)
     expect(blogContainer).toHaveTextContent(blog.user.username)
+  })
+
+  test('like button is clicked twice', async () => {
+    const user = userEvent.setup()
+    const visibilityButton = component.container.querySelector('.visibilityButton')
+    await user.click(visibilityButton)
+
+    const likeButton = component.container.querySelector('.likeButton')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(updateLikesMockHandler.mock.calls).toHaveLength(2)
   })
 })
 
