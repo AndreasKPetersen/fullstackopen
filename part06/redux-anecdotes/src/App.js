@@ -19,7 +19,9 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {anecdotes.sort(function(a, b) { 
+        return b.votes - a.votes  ||  a.content.localeCompare(b.content);
+        }).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
