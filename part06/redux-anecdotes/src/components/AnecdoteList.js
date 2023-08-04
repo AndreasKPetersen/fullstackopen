@@ -1,22 +1,15 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { incrementAnecdoteVote } from '../reducers/anecdoteReducer'
-
-/*
-({ anecdotes, filter }) => {
-        if ( filter === '' ) {
-            return anecdotes
-        } else {
-            return anecdotes.filter(anecdote => anecdote.includes(filter))
-        }
-*/
+import { notificationChange } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
     const dispatch = useDispatch()
     const anecdotes = useSelector( state => state.anecdotes )
     const filter = useSelector( state => state.filter )
 
-    const vote = (id) => {
+    const vote = (id, content) => {
         dispatch(incrementAnecdoteVote(id))
+        dispatch(notificationChange(content))
     }
 
     return (
@@ -33,7 +26,7 @@ const AnecdoteList = () => {
                     </div>
                     <div>
                         has {anecdote.votes}
-                        <button onClick={() => vote(anecdote.id)}>vote</button>
+                        <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
                     </div>
                 </div>
             )}
