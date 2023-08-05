@@ -7,9 +7,10 @@ const AnecdoteList = () => {
     const anecdotes = useSelector( state => state.anecdotes )
     const filter = useSelector( state => state.filter )
 
-    const vote = (id, content) => {
+    const vote = async (id, content) => {
         dispatch(incrementAnecdoteVote(id))
         dispatch(notificationChange(content))
+        setTimeout(() => dispatch(notificationChange(null)), 5000)
     }
 
     return (
