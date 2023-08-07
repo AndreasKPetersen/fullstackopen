@@ -7,9 +7,9 @@ const AnecdoteList = () => {
     const anecdotes = useSelector( state => state.anecdotes )
     const filter = useSelector( state => state.filter )
 
-    const vote = async (id, content) => {
-        dispatch(incrementAnecdoteVote(id))
-        dispatch(notificationChange(content))
+    const vote = async (anecdote) => {
+        dispatch(incrementAnecdoteVote(anecdote))
+        dispatch(notificationChange(anecdote.content))
         setTimeout(() => dispatch(notificationChange(null)), 5000)
     }
 
@@ -27,7 +27,7 @@ const AnecdoteList = () => {
                     </div>
                     <div>
                         has {anecdote.votes}
-                        <button onClick={() => vote(anecdote.id, anecdote.content)}>vote</button>
+                        <button onClick={() => vote(anecdote)}>vote</button>
                     </div>
                 </div>
             )}
