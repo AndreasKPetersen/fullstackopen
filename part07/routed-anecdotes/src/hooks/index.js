@@ -7,14 +7,16 @@ export const useField = (type) => {
     setValue(event.target.value)
   }
 
-  return {
+  const reset = () => {
+    setValue('')
+  }
+
+  return [
+    {
     type,
     value,
     onChange
-  }
-}
-
-// modules can have several named exports
-export const useAnotherHook = () => {
-  // ...
+    },
+    reset
+  ]
 }
