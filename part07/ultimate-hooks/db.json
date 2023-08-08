@@ -7,6 +7,14 @@
     {
       "id": 2,
       "content": "best feature ever <3"
+    },
+    {
+      "content": "Testing",
+      "id": 3
+    },
+    {
+      "content": "Testing again",
+      "id": 4
     }
   ],
   "persons": [
@@ -19,6 +27,16 @@
       "id": 2,
       "name": "Tarja Halonen",
       "number": "040-2223334"
+    },
+    {
+      "name": "Testing",
+      "number": "Testing",
+      "id": 3
+    },
+    {
+      "name": "Does this work",
+      "number": "?",
+      "id": 4
     }
   ]
 }
