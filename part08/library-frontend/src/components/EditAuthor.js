@@ -1,22 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useMutation } from "@apollo/client"
 import { EDIT_AUTHOR, ALL_AUTHORS } from "../queries"
 
-const EditAuthor = ({ show, setError }) => {
+const EditAuthor = ({ names, setError }) => {
   const [name, setName] = useState("")
   const [born, setBorn] = useState("")
 
-  const [editAuthor] = useMutation(EDIT_AUTHOR, {
+  const [editAuthor, result] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
-    onError: (error) => {
-      const messages = error.graphQLErrors[0].message
-      setError(messages)
-    },
+    onError: (error) => setError(error.graphQLErrors[0].message),
   })
 
-  if (!show) {
-    return null
-  }
+  useEffect(() => {
+    if (result.data && result.data.editAuthor === null) {
+      setError("author not found")
+    }
+  }, [result.data]) // eslint-disable-line
 
   const submit = async (event) => {
     event.preventDefault()
@@ -32,11 +31,21 @@ const EditAuthor = ({ show, setError }) => {
       <h2>set birthyear</h2>
       <form onSubmit={submit}>
         <div>
-          name
-          <input
+          author
+          <select
+            required
             value={name}
             onChange={({ target }) => setName(target.value)}
-          />
+          >
+            <option value="" hidden disabled>
+              Select author
+            </option>
+            {names.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           born

@@ -1,10 +1,11 @@
 import { useQuery } from "@apollo/client"
+import EditAuthor from "./EditAuthor"
 import { ALL_AUTHORS } from "../queries"
 
-const Authors = (props) => {
+const Authors = ({ show, setError }) => {
   const result = useQuery(ALL_AUTHORS)
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
 
@@ -33,6 +34,10 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
+      <EditAuthor
+        names={authors.map((author) => author.name)}
+        setError={setError}
+      />
     </div>
   )
 }
