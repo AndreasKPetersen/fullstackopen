@@ -1,0 +1,17 @@
+{
+  "name": "library-backend",
+  "version": "1.0.0",
+  "description": "GraphQL backend for a small library",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andreas Fricke Petersen",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.9.1",
+    "graphql": "^16.7.1",
+    "nodemon": "^3.0.1"
+  }
+}
