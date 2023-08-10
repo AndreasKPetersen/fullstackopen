@@ -63,7 +63,59 @@ type Mutation {
 const resolvers = {
   Query: {
     authorCount: async () => Author.collection.countDocuments(),
-    allAuthors: async (obj, args) => Author.find({}),
+    bookCount: async () => Book.collection.countDocuments(),
+    allAuthors: async () => Author.find({}),
+    allBooks: async (obj, args) => {
+      if (args.author && args.genre) {
+        const author = await Author.findOne({ name: args.author })
+
+        console.log(author)
+
+        if (!author) {
+          return null
+        }
+
+        const books = await Book.find({
+          $and: [
+            { author: { $eq: author.id } },
+            { genres: { $in: args.genre } },
+          ],
+        }).populate("author")
+
+        return books
+      }
+
+      if (args.author) {
+        const author = await Author.findOne({ name: args.author })
+
+        if (!author) {
+          return null
+        }
+
+        const books = await Book.find({ author: { $eq: author.id } }).populate(
+          "author"
+        )
+
+        return books
+      }
+
+      if (args.genre) {
+        const books = await Book.find({ genres: { $in: args.genre } }).populate(
+          "author"
+        )
+
+        return books.filter((book) => book.genres.includes(args.genre))
+      }
+
+      return await Book.find({}).populate("author")
+    },
+  },
+  Author: {
+    bookCount: async (obj, args) => {
+      let books = Book.find({})
+
+      return books.filter((book) => book.author === obj.name).length
+    },
   },
   Mutation: {
     addBook: async (obj, args) => {
@@ -76,6 +128,16 @@ const resolvers = {
 
       const book = new Book({ ...args, author: currentAuthor.id })
       return book.save()
+    },
+    editAuthor: async (obj, args) => {
+      let currentAuthor = await Author.findOne({ name: args.name })
+
+      if (!currentAuthor) {
+        return null
+      }
+
+      currentAuthor.born = args.setBornTo
+      return currentAuthor.save()
     },
   },
 }
