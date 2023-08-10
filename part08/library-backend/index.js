@@ -1,11 +1,12 @@
 const { ApolloServer } = require("@apollo/server")
 const { startStandaloneServer } = require("@apollo/server/standalone")
-require("dotenv").config()
+const { GraphQLError } = require("graphql")
 
 const mongoose = require("mongoose")
 mongoose.set("strictQuery", false)
 const Author = require("./models/author")
 const Book = require("./models/book")
+require("dotenv").config()
 
 const MONGODB_URI = process.env.MONGODB_URI
 
@@ -123,11 +124,35 @@ const resolvers = {
 
       if (!currentAuthor) {
         currentAuthor = new Author({ name: args.author })
-        await currentAuthor.save()
+
+        try {
+          await currentAuthor.save()
+        } catch (error) {
+          throw new GraphQLError("Adding author failed", {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              invalidArgs: args.author,
+              error,
+            },
+          })
+        }
       }
 
       const book = new Book({ ...args, author: currentAuthor.id })
-      return book.save()
+
+      try {
+        await book.save()
+      } catch (error) {
+        throw new GraphQLError("Adding book failed", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args.title,
+            error,
+          },
+        })
+      }
+
+      return book
     },
     editAuthor: async (obj, args) => {
       let currentAuthor = await Author.findOne({ name: args.name })
@@ -137,6 +162,7 @@ const resolvers = {
       }
 
       currentAuthor.born = args.setBornTo
+
       return currentAuthor.save()
     },
   },
