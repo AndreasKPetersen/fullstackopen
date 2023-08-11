@@ -136,9 +136,9 @@ const resolvers = {
   },
   Author: {
     bookCount: async (obj, args) => {
-      let books = Book.find({})
+      const books = await Book.find({}).populate("author")
 
-      return books.filter((book) => book.author === obj.name).length
+      return books.filter((book) => book.author.name === obj.name).length
     },
   },
   Mutation: {
