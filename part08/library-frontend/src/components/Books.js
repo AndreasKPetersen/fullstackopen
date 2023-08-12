@@ -8,7 +8,9 @@ const Books = (props) => {
   const result = useQuery(ALL_BOOKS)
   const filteredResult = useQuery(ALL_BOOKS, {
     variables: { genre: filter },
+    fetchPolicy: "no-cache",
   })
+  filteredResult.refetch()
 
   if (!props.show) {
     return null
