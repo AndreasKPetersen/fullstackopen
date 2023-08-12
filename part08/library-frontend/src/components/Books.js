@@ -6,16 +6,20 @@ const Books = (props) => {
   const [filter, setFilter] = useState(null)
 
   const result = useQuery(ALL_BOOKS)
+  const filteredResult = useQuery(ALL_BOOKS, {
+    variables: { genre: filter },
+  })
 
   if (!props.show) {
     return null
   }
 
-  if (result.loading) {
+  if (result.loading || filteredResult.loading) {
     return <div>loading...</div>
   }
 
   const books = result.data.allBooks
+  const filteredBooks = filteredResult.data.allBooks
 
   const genres = []
   books.forEach((book) => {
@@ -25,10 +29,6 @@ const Books = (props) => {
       }
     })
   })
-
-  const booksToShow = !filter
-    ? books
-    : books.filter((book) => book.genres.includes(filter))
 
   return (
     <div>
@@ -41,7 +41,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {booksToShow.map((a) => (
+          {filteredBooks.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -55,7 +55,9 @@ const Books = (props) => {
           <button
             key={genre}
             value={genre}
-            onClick={({ target }) => setFilter(target.value)}
+            onClick={({ target }) => {
+              setFilter(target.value)
+            }}
           >
             {genre}
           </button>
