@@ -4,6 +4,7 @@ const { GraphQLError } = require("graphql")
 const jwt = require("jsonwebtoken")
 const Author = require("./models/author")
 const Book = require("./models/book")
+const User = require("./models/user")
 
 const resolvers = {
   Query: {
@@ -96,7 +97,7 @@ const resolvers = {
       const book = new Book({ ...args, author: currentAuthor.id })
 
       try {
-        const result = await book.save()
+        await book.save()
       } catch (error) {
         throw new GraphQLError("Adding book failed", {
           extensions: {
@@ -107,7 +108,7 @@ const resolvers = {
         })
       }
 
-      pubsub.publish("BOOK_ADDED", { bookAdded: book })
+      pubsub.publish("BOOK_ADDED", { bookAdded: book.populate("author") })
 
       return book.populate("author")
     },
@@ -173,7 +174,7 @@ const resolvers = {
   },
   Subscription: {
     bookAdded: {
-      subscribe: () => pubsub.asyncIterator("BOOK_ADDED"),
+      subscribe: () => pubsub.asyncIterator(["BOOK_ADDED"]),
     },
   },
 }
