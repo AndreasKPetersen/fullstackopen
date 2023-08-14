@@ -6,6 +6,8 @@ const Author = require("./models/author")
 const Book = require("./models/book")
 const User = require("./models/user")
 
+let books
+
 const resolvers = {
   Query: {
     me: (obj, args, context) => {
@@ -13,7 +15,10 @@ const resolvers = {
     },
     authorCount: async () => Author.collection.countDocuments(),
     bookCount: async () => Book.collection.countDocuments(),
-    allAuthors: async () => Author.find({}),
+    allAuthors: async () => {
+      books = await Book.find({}).populate("author")
+      return Author.find({})
+    },
     allBooks: async (obj, args) => {
       if (args.author && args.genre) {
         const author = await Author.findOne({ name: args.author })
@@ -59,8 +64,6 @@ const resolvers = {
   },
   Author: {
     bookCount: async (obj, args) => {
-      const books = await Book.find({}).populate("author")
-
       return books.filter((book) => book.author.name === obj.name).length
     },
   },

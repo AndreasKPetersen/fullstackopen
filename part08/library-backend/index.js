@@ -33,6 +33,10 @@ mongoose
     console.log("error connection to MongoDB:", error.message)
   })
 
+mongoose.set("debug", (collectionName, method, query, doc) => {
+  console.log(`${collectionName}.${method}`, JSON.stringify(query), doc)
+})
+
 const start = async () => {
   const app = express()
   const httpServer = http.createServer(app)
