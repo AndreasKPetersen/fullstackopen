@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/blogs
+Content-Type: application/json
+
+{
+    "title": "DeploymentPipeline",
+    "author": "Martin Fowler",
+    "url": "https://martinfowler.com/bliki/DeploymentPipeline.html",
+    "likes": 5
+}

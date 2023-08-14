@@ -1,0 +1,10 @@
+PUT http://localhost:8080/api/blogs/64c74d20ae9a544e1766533a
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkZXBlIiwiaWQiOiI2NGMxZjkyMjUzY2NkNjFlZWNlZjc0OTAiLCJpYXQiOjE2OTA3ODI5NzUsImV4cCI6MTY5MDc4NjU3NX0.d9muRzcYQaF9v0BZqGqtlJfsnvIeE47yRGFJn3JI_sA
+
+{
+    "title": "DeploymentPipelinennnny",
+    "author": "Martin Fowlernnnnn",
+    "url": "https://martinfowler.com/bliki/DeploymentPipelinennnnn.html",
+    "likes": 1000
+}
