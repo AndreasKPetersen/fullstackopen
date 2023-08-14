@@ -1,11 +1,15 @@
 import { useState } from "react"
+
 import Authors from "./components/Authors"
 import Books from "./components/Books"
 import LoginForm from "./components/LoginForm"
 import NewBook from "./components/NewBook"
 import Notify from "./components/Notify"
 import Recommended from "./components/Recommended"
+
 import { useApolloClient } from "@apollo/client"
+import { useSubscription } from "@apollo/client"
+import { ALL_BOOKS, BOOK_ADDED } from "./queries"
 
 const App = () => {
   const [token, setToken] = useState(null)
@@ -25,6 +29,19 @@ const App = () => {
       setErrorMessage(null)
     }, 10000)
   }
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const addedBook = data.data.bookAdded
+      notify(`${addedBook.title} added`)
+
+      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(addedBook),
+        }
+      })
+    },
+  })
 
   if (!token) {
     return (

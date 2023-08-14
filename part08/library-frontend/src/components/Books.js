@@ -8,7 +8,6 @@ const Books = (props) => {
   const result = useQuery(ALL_BOOKS)
   const filteredResult = useQuery(ALL_BOOKS, {
     variables: { genre: filter },
-    fetchPolicy: "no-cache",
   })
   filteredResult.refetch()
 
@@ -53,6 +52,13 @@ const Books = (props) => {
         </tbody>
       </table>
       <div>
+        <button
+          onClick={() => {
+            setFilter("")
+          }}
+        >
+          Reset
+        </button>
         {genres.map((genre) => (
           <button
             key={genre}
