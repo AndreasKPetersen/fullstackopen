@@ -43,5 +43,8 @@ const calculateExercises = (
   }
 }
 
-const result: ExerciseResult = calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2)
-console.log(result)
+const targetHours: number = Number(process.argv[2])
+const exerciseHours: number[] = process.argv
+  .slice(3, process.argv.length)
+  .map((e) => Number(e))
+console.log(calculateExercises(exerciseHours, targetHours))
