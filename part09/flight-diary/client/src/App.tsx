@@ -3,6 +3,8 @@ import { Diary } from "./types";
 import axios from "axios";
 import { apiBaseUrl } from "./constants";
 import diaryService from "./services/diaryService";
+import Diaries from "./components/Diaries";
+import DiaryForm from "./components/DiaryForm";
 
 const App = () => {
   const [diaries, setDiaries] = useState<Diary[]>([]);
@@ -14,21 +16,14 @@ const App = () => {
       const diaries = await diaryService.getAllDiaries();
       setDiaries(diaries);
     };
+
     void fetchDiaryList();
   }, []);
 
   return (
     <div>
-      <h2>Diary entries</h2>
-      {diaries.map((diary) => {
-        return (
-          <div key={diary.id}>
-            <h3>{diary.date}</h3>
-            <div>visibility: {diary.visibility}</div>
-            <div>weather: {diary.weather}</div>
-          </div>
-        );
-      })}
+      <DiaryForm />
+      <Diaries diaries={diaries} />
     </div>
   );
 };
