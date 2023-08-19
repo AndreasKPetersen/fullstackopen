@@ -52,7 +52,7 @@ const App = () => {
 
   const [notes, noteService] = useResource('http://localhost:3005/notes')
   const [persons, personService] = useResource('http://localhost:3005/persons')
-
+  
   useEffect(() => { 
     noteService.getAll()
     personService.getAll() // eslint-disable-next-line
