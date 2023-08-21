@@ -2,7 +2,7 @@ import express from "express";
 
 import patientService from "../services/patientService";
 
-import toNewPatientsEntry from "../utils";
+import toNewPatients from "../utils";
 
 const router = express.Router();
 
@@ -22,9 +22,9 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
   try {
-    const newPatientEntry = toNewPatientsEntry(req.body);
-    const addedEntry = patientService.addPatient(newPatientEntry);
-    res.json(addedEntry);
+    const newPatient = toNewPatients(req.body);
+    const addedPatient = patientService.addPatient(newPatient);
+    res.json(addedPatient);
   } catch (error: unknown) {
     let errorMessage = "Something went wrong.";
     if (error instanceof Error) {
