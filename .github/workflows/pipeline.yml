@@ -37,6 +37,9 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:8080
 
+      - name: Install flyctl
+        run: curl -L https://fly.io/install.sh | sh
+
       - name: Deploy app
         run: flyctl deploy --remote-only
         env:
