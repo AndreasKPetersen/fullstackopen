@@ -41,52 +41,8 @@ primary_region = "arn"
     protocol = "http"
     timeout = 2000
     tls_skip_verify = false
-
-    # fly.toml app configuration file generated for still-leaf-3876 on 2023-08-22T12:52:29+02:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
-app = "still-leaf-3876"
-primary_region = "arn"
-
-[deploy]
-  release_command = "npm run build"
-
-[processes]
-  app = "node app.js"
-
-[build]
-  [build.args]
-    NODE_VERSION = "16.19.1"
-
-[env]
-  PORT = "8080"
-
-[services]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ["app"]
-
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
-
-  [[services.http_checks]]
-    interval = 10000
-    grace_period = "5s"
-    method = "get"
-    path = "/health"
-    protocol = "http"
-    timeout = 2000
-    tls_skip_verify = false
     [services.http_checks.headers]
-  
+
   [[services.http_checks]]
     interval = 10000
     grace_period = "5s"
