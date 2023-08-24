@@ -49,7 +49,9 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
   tag_release:
-    if: ${{ github.event_name == 'push' }}
+    if: |
+      ${{ github.event_name == 'push' }} &&
+      contains(join(toJson(github.event.commits.*.message), ' '), '#skip') != true
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
     defaults:
