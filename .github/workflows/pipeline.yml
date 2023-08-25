@@ -48,6 +48,29 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
+      - name: Test Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          color: "#00ff00"
+          text: "A new version of Pokedex deployed"
+          details: "to https://still-leaf-3876.fly.dev/ by ${{ github.event.head_commit.author.username }}"
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Test Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+        with:
+          severity: error
+          color: "#ff0000"
+          text: "Build failed"
+          description: "commit"
+          details: "https://github.com/${{ github.repository }}/commit/${{ env.COMMIT_SHA }} by ${{ github.event.head_commit.author.username }} broke the build"
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
   tag_release:
     if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}
     needs: [simple_deployment_pipeline]
