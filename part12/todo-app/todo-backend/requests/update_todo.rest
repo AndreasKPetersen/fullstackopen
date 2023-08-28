@@ -1,0 +1,8 @@
+PUT http://localhost:3000/todos/64ec7d672358999754b06b81
+Content-Type: application/json
+
+{
+    "_id": "64ec7d672358999754b06b81",
+    "text": "the course is completed",
+    "done": false
+}
