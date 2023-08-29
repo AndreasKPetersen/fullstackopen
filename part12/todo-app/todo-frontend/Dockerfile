@@ -8,6 +8,10 @@ RUN npm ci
 
 RUN npm run build
 
+# Test stage for running tests
+FROM build-stage AS test-stage
+RUN CI=true npm test
+
 # This is a new stage, everything before this is gone, except the files we want to COPY
 FROM nginx:1.20-alpine
 # COPY the directory build from build-stage to /usr/share/nginx/html
