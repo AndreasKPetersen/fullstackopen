@@ -4,6 +4,16 @@ const router = express.Router();
 
 const redis = require("../redis");
 
+let addedTodosCount;
+
+const initializeTodosCount = async () => {
+  addedTodosCount = await redis.getAsync("added_todos");
+  if (!addedTodosCount) {
+    const todos = await Todo.find({});
+    addedTodosCount = todos.length;
+  }
+};
+
 /* GET todos listing. */
 router.get("/", async (_, res) => {
   const todos = await Todo.find({});
@@ -11,21 +21,21 @@ router.get("/", async (_, res) => {
 });
 
 router.get("/statistics", async (req, res) => {
-  const addedTodosCount = await redis.getAsync("added_todos");
+  await initializeTodosCount();
   res.send(JSON.stringify({ added_todos: Number(addedTodosCount) }));
 });
 
 /* POST todo to listing. */
 router.post("/", async (req, res) => {
+  await initializeTodosCount();
+  await redis.setAsync("added_todos", Number(addedTodosCount) + 1);
+
   const todo = await Todo.create({
     text: req.body.text,
     done: false,
   });
 
   res.send(todo);
-
-  const addedTodosCount = await redis.getAsync("added_todos");
-  await redis.setAsync("added_todos", Number(addedTodosCount) + 1);
 });
 
 const singleRouter = express.Router();
