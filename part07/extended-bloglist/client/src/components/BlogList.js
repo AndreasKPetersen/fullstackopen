@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 
 import Blog from "./Blog";
 
-const BlogList = () => {
-  const user = useSelector((state) => state.login);
+const BlogList = (user) => {
+  //const user = useSelector((state) => state.login);
 
   const blogs = useSelector((state) => state.blogs);
 

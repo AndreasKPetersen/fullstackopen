@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import userService from ".././services/user";
 
 const userSlice = createSlice({
-  name: "user",
+  name: "users",
   initialState: [],
   reducers: {
     setUsers(state, action) {

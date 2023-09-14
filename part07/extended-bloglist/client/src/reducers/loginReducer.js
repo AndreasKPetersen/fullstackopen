@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { setNotification } from "./notificationReducer";
 
+import blogService from ".././services/blogs";
 import loginService from ".././services/login";
 import userService from ".././services/user";
 
@@ -27,6 +28,7 @@ export const loginUser = (username, password) => {
         username,
         password,
       });
+
       userService.setUser(user);
       dispatch(login(user));
       dispatch(
@@ -42,6 +44,7 @@ export const logoutUser = () => {
   return async (dispatch) => {
     userService.resetUser();
     dispatch(logout(null));
+    dispatch(setNotification(`logout successful`, "success", 5));
   };
 };
 
