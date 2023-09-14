@@ -10,15 +10,17 @@ const blogSlice = createSlice({
       state.push(action.payload);
     },
     removeBlog(state, action) {
-      const { id } = action.payload;
+      const id = action.payload;
       return state.filter((blog) => blog.id !== id);
     },
     setBlogs(state, action) {
       return action.payload;
     },
     updateBlog(state, action) {
-      const { id, blogObject } = action.payload;
-      return state.map((blog) => (blog.id !== id ? blog : blogObject));
+      const updatedBlog = action.payload;
+      return state.map((blog) =>
+        blog.id !== updatedBlog.id ? blog : updatedBlog
+      );
     },
   },
 });
@@ -45,16 +47,18 @@ export const createBlog = (blogObject) => {
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
-    const blogs = await blogService.getAll();
-    dispatch(setBlogs(blogs));
+    try {
+      const blogs = await blogService.getAll();
+      dispatch(setBlogs(blogs));
+    } catch (error) {}
   };
 };
 
-export const deleteBlog = (id) => {
+export const deleteBlog = (blogObject) => {
   return async (dispatch) => {
     try {
-      await blogService.remove(id);
-      dispatch(deleteBlog(id));
+      await blogService.remove(blogObject.id);
+      dispatch(removeBlog(blogObject.id));
       dispatch(setNotification(`Blog was deleted`, "success", 5));
     } catch (exception) {
       dispatch(setNotification(`Blog was not deleted`, "error", 5));

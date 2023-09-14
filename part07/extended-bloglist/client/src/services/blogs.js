@@ -1,12 +1,10 @@
 import axios from "axios";
-import userService from "./user";
-
 const baseUrl = "/api/blogs";
 
-const config = () => {
-  return {
-    headers: { Authorization: `Bearer ${userService.retrieveToken()}` },
-  };
+let token = null;
+
+const setToken = (newToken) => {
+  token = `Bearer ${newToken}`;
 };
 
 const getAll = () => {
@@ -15,18 +13,30 @@ const getAll = () => {
 };
 
 const create = async (newObject) => {
-  const response = await axios.post(baseUrl, newObject, config());
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const response = await axios.post(baseUrl, newObject, config);
   return response.data;
 };
 
 const update = async (id, newObject) => {
-  const response = await axios.put(`${baseUrl}/${id}`, newObject, config());
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const response = await axios.put(`${baseUrl}/${id}`, newObject, config);
   return response.data;
 };
 
 const remove = (id) => {
-  const request = axios.delete(`${baseUrl}/${id}`, config());
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const request = axios.delete(`${baseUrl}/${id}`, config);
   return request.then((response) => response.data);
 };
 
-export default { getAll, create, update, remove };
+export default { getAll, create, update, remove, setToken };

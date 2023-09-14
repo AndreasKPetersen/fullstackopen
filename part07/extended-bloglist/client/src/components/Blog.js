@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { updateLikes, deleteBlog } from "../reducers/blogReducer";
 
@@ -24,16 +24,21 @@ const Blog = ({ blog, user }) => {
 
   const handleLike = (event) => {
     event.preventDefault();
-    const likedBlog = {
-      ...blog,
+    const blogObject = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
       likes: blog.likes + 1,
+      user: blog.user.id,
     };
-    dispatch(updateLikes(blog.id, likedBlog));
+    dispatch(updateLikes(blog.id, blogObject));
   };
 
   const handleDelete = (event) => {
     event.preventDefault();
-    dispatch(deleteBlog(blog.id));
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      dispatch(deleteBlog(blog));
+    }
   };
 
   return (
