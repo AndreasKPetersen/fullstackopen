@@ -49,7 +49,7 @@ blogsRouter.post("/:id/comments", async (request, response) => {
 
   await blog.save();
 
-  response.status(201).json(request.body);
+  response.status(201).json(blog);
 });
 
 blogsRouter.delete("/:id", async (request, response) => {

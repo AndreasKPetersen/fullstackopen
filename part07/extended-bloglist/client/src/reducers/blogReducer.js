@@ -77,4 +77,16 @@ export const updateLikes = (id, blogObject) => {
   };
 };
 
+export const updateComments = (id, comment) => {
+  return async (dispatch) => {
+    try {
+      const commentedBlog = await blogService.createComment(id, comment);
+      dispatch(updateBlog(commentedBlog));
+      dispatch(setNotification(`commented blog`, "success", 5));
+    } catch (error) {
+      dispatch(setNotification(`did not comment blog`, "error", 5));
+    }
+  };
+};
+
 export default blogSlice.reducer;
