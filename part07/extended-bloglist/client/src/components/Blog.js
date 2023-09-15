@@ -57,6 +57,13 @@ const Blog = ({ user }) => {
           </button>
         </div>
       )}
+
+      <h4>comments</h4>
+      <ul>
+        {blog.comments.map((comment) => (
+          <li key={comment}>{comment}</li>
+        ))}
+      </ul>
     </div>
   );
 };
