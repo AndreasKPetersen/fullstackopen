@@ -17,6 +17,7 @@ import { initializeUsers } from "./reducers/userReducer";
 import { Routes, Route, useMatch } from "react-router-dom";
 import Users from "./components/Users";
 import User from "./components/User";
+import Navigation from "./components/Navigation";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,13 +37,10 @@ const App = () => {
     dispatch(initializeBlogs());
   }, []);
 
-  const handleLogout = (event) => {
-    event.preventDefault();
-    dispatch(logoutUser());
-  };
-
   return (
     <div>
+      <Navigation />
+
       <h2>Blogs</h2>
 
       <Notification />
@@ -57,10 +55,7 @@ const App = () => {
 
       {user && (
         <div>
-          <p>
-            {user.username} logged in{" "}
-            <button onClick={handleLogout}>logout</button>
-          </p>
+          <p></p>
 
           <Togglable buttonLabel="create new blog" ref={blogFormRef}>
             <BlogForm />
