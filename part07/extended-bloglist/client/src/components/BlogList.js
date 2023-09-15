@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Blog from "./Blog";
 
@@ -9,10 +10,23 @@ const BlogList = (user) => {
     return -(a.likes - b.likes) || a.title.localeCompare(b.title);
   });
 
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5,
+  };
+
   return (
     <div>
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} user={user} />
+        <div className="blog" style={blogStyle} key={blog.id}>
+          <Link to={`/blogs/${blog.id}`}>
+            <span className="blogTitle">{blog.title} </span>
+            <span className="blogAuthor">{blog.author}</span>
+          </Link>
+        </div>
       ))}
     </div>
   );

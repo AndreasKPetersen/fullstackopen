@@ -8,6 +8,10 @@ const User = () => {
     state.users.find((user) => user.id === id)
   );
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <div>
       <h2>{user.username}</h2>

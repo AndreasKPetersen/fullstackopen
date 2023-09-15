@@ -1,18 +1,22 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { updateLikes, deleteBlog } from "../reducers/blogReducer";
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ user }) => {
   const dispatch = useDispatch();
 
-  const [visible, setVisible] = useState(false);
+  const id = useParams().id;
 
-  const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+  const blog = useSelector((state) =>
+    state.blogs.find((blog) => blog.id === id)
+  );
 
-  const buttonText = visible ? "hide" : "view";
+  if (!blog) {
+    return null;
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -42,31 +46,23 @@ const Blog = ({ blog, user }) => {
   };
 
   return (
-    <div className="blog" style={blogStyle}>
-      <div>
-        <span className="blogTitle">{blog.title} </span>
-        <span className="blogAuthor">{blog.author}</span>
-        <button className="visibilityButton" onClick={toggleVisibility}>
-          {buttonText}
+    <div>
+      <h2>
+        {blog.title} {blog.author}
+      </h2>
+      <a href={blog.url}>{blog.url}</a>
+      <div className="likes">
+        {blog.likes}
+        <button className="likeButton" onClick={handleLike}>
+          like
         </button>
       </div>
-      {visible && (
-        <div className="blogDetails">
-          <div>{blog.url}</div>
-          <div className="likes">
-            {blog.likes}
-            <button className="likeButton" onClick={handleLike}>
-              like
-            </button>
-          </div>
-          <div>{blog.user.username}</div>
-          {user.username === blog.user.username && (
-            <div>
-              <button className="deleteButton" onClick={handleDelete}>
-                delete
-              </button>
-            </div>
-          )}
+      <div>added by {blog.user.username}</div>
+      {user.username === blog.user.username && (
+        <div>
+          <button className="deleteButton" onClick={handleDelete}>
+            delete
+          </button>
         </div>
       )}
     </div>

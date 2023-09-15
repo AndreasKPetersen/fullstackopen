@@ -7,7 +7,7 @@ const retrieveToken = () => {
   return token;
 };
 
-const getUser = (user) => {
+const getUser = () => {
   const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
 
   if (loggedUserJSON) {

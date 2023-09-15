@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import Blog from "./components/Blog";
 import BlogList from "./components/BlogList";
 import BlogForm from "./components/BlogForm";
 import LoginForm from "./components/LoginForm";
@@ -20,8 +21,6 @@ import User from "./components/User";
 const App = () => {
   const dispatch = useDispatch();
   const blogFormRef = useRef();
-
-  // const [user, setUser] = useState(null);
 
   const user = useSelector((state) => state.login);
 
@@ -69,6 +68,7 @@ const App = () => {
 
           <Routes>
             <Route path="/" element={<BlogList user={user} />} />
+            <Route path="/blogs/:id" element={<Blog user={user} />} />
             <Route path="/users" element={<Users />} />
             <Route path="/users/:id" element={<User />} />
           </Routes>
