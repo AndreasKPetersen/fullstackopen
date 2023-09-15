@@ -4,17 +4,10 @@ import userService from "./user";
 
 const baseUrl = "/api/blogs";
 
-let token = null;
-
-const setToken = (newToken) => {
-  token = `Bearer ${newToken}`;
-};
-
 const config = () => {
-  console.log(userService.retrieveToken());
   return {
     headers: {
-      Authorization: `bearer ${userService.retrieveToken()}`,
+      Authorization: `Bearer ${userService.retrieveToken()}`,
     },
   };
 };
@@ -30,21 +23,14 @@ const create = async (newObject) => {
 };
 
 const update = async (id, newObject) => {
-  const config = {
-    headers: { Authorization: token },
-  };
-
-  const response = await axios.put(`${baseUrl}/${id}`, newObject, config);
+  const response = await axios.put(`${baseUrl}/${id}`, newObject, config());
+  console.log(response);
   return response.data;
 };
 
 const remove = (id) => {
-  const config = {
-    headers: { Authorization: token },
-  };
-
-  const request = axios.delete(`${baseUrl}/${id}`, config);
+  const request = axios.delete(`${baseUrl}/${id}`, config());
   return request.then((response) => response.data);
 };
 
-export default { getAll, create, update, remove, setToken };
+export default { getAll, create, update, remove };
