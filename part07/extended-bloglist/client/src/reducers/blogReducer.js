@@ -81,6 +81,7 @@ export const updateComments = (id, comment) => {
   return async (dispatch) => {
     try {
       const commentedBlog = await blogService.createComment(id, comment);
+      console.log(commentedBlog);
       dispatch(updateBlog(commentedBlog));
       dispatch(setNotification(`commented blog`, "success", 5));
     } catch (error) {
