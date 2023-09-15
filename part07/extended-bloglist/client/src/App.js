@@ -13,8 +13,9 @@ import { logoutUser } from "./reducers/loginReducer";
 import { login } from "./reducers/loginReducer";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { initializeUsers } from "./reducers/userReducer";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useMatch } from "react-router-dom";
 import Users from "./components/Users";
+import User from "./components/User";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<BlogList user={user} />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/users/:id" element={<User />} />
           </Routes>
         </div>
       )}

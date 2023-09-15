@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 import Blog from "./Blog";
 
 const BlogList = (user) => {
-  //const user = useSelector((state) => state.login);
-
   const blogs = useSelector((state) => state.blogs);
 
   const sortedBlogs = [...blogs].sort(function (a, b) {
